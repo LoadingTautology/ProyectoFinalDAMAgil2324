@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
-
+using Microsoft.EntityFrameworkCore;
+using ProyectoFinalDAMAgil2324.Models;
+using ProyectoFinalDAMAgil2324.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +18,17 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddRazorPages();
 
+builder.Services.AddDbContext<AppDBContext>(options =>
+        options.UseMySql(builder.Configuration.GetConnectionString("Default"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.3.2-mariadb")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Acceso/Login";
+
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,11 +43,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Acceso}/{action=Login}/{id?}");
 
 app.Run();
