@@ -51,5 +51,19 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         }
 
         #endregion Registrarse
+
+        #region Login
+
+        [HttpGet]
+        public IActionResult Login() {
+        
+            return View();
+        }
+
+
+        #endregion Login
+
+
+
     }
 }
