@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalDAMAgil2324.Data;
+using ProyectoFinalDAMAgil2324.ViewModels;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
@@ -15,6 +16,12 @@ namespace ProyectoFinalDAMAgil2324.Controllers
 
         [HttpGet]
         public IActionResult Registrarse()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registrarse(UsuarioVM modelo)
         {
             return View();
         }
