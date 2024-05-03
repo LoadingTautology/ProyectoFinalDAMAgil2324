@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -8,6 +7,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+/* Add context */
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+builder.Services.AddDbContext<AppDBContext>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+//https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
+/*
+builder.Services.AddDbContext<AppDBContext>(options =>
+        options.UseMySql(builder.Configuration.GetConnectionString("Default"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.3.2-mariadb")));
+*/
+
+
+/* Add Cookie Authentication */
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Acceso/Login";
+
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+    });
+
+
+
 
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
@@ -18,17 +41,6 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 builder.Services.AddRazorPages();
-
-builder.Services.AddDbContext<AppDBContext>(options =>
-        options.UseMySql(builder.Configuration.GetConnectionString("Default"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.3.2-mariadb")));
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Acceso/Login";
-
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
-    });
 
 var app = builder.Build();
 
@@ -44,6 +56,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+/* Add Cookie Authentication */
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -51,5 +65,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Acceso}/{action=Login}/{id?}");
+//pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
