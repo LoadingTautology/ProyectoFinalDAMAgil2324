@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Data;
 using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.ViewModels;
+using System.Security.Claims;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
@@ -58,6 +62,38 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         public IActionResult Login() {
         
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM modelo)
+        {
+            Usuario? usuario_encontrado = await _appDbContext.Usuarios.Where( u => u.Correo == modelo.Correo && u.Clave == modelo.Clave ).FirstOrDefaultAsync();
+            
+            if (usuario_encontrado == null)
+            {
+                ViewData["Mensaje"] = "No se ha encontraron coincidencias";
+                return View();
+            }
+
+
+            //List<Claim> claims = new List<Claim>()
+            //{
+            //    new Claim(ClaimTypes.Name, usuario_encontrado.NombreCompleto)
+            //};
+
+            //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            //AuthenticationProperties authProperties = new AuthenticationProperties()
+            //{
+            //    AllowRefresh = true,
+            //};
+
+            //await HttpContext.SignInAsync(
+            //    CookieAuthenticationDefaults.AuthenticationScheme,
+            //    new ClaimsPrincipal(claimsIdentity),
+            //    authProperties
+            //    );
+
+            return RedirectToAction("Index", "Home");
         }
 
 
