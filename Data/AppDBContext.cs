@@ -21,7 +21,7 @@ namespace ProyectoFinalDAMAgil2324.Data
                 .UseMySqlIdentityColumn()
                 .ValueGeneratedOnAdd();
 
-                tb.Property(col => col.NombreCompleto).HasMaxLength(50); 
+                tb.Property(col => col.NombreCompleto).HasMaxLength(50);
                 tb.Property(col => col.Correo).HasMaxLength(50);
                 tb.Property(col => col.Clave).HasMaxLength(50);
             });
