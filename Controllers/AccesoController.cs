@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalDAMAgil2324.Data;
+using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.ViewModels;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
@@ -21,8 +22,31 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registrarse(UsuarioVM modelo)
+        public async Task<IActionResult> Registrarse(UsuarioVM modelo)
         {
+            if (modelo.Clave != modelo.ConfirmarClave)
+            {
+                ViewData["Mensaje"] = "Las contraseñas no coinciden";
+                return View();
+            }
+
+            Usuario usuario = new Usuario()
+            {
+                NombreCompleto = modelo.NombreCompleto,
+                Correo = modelo.Correo,
+                Clave = modelo.Clave
+            };
+
+            await _appDbContext.Usuarios.AddAsync(usuario);
+            await _appDbContext.SaveChangesAsync();
+
+            if (usuario.IdUsuario != 0)
+            {
+                return RedirectToAction("Login", "Acceso");
+            }
+
+            ViewData["Mensaje"] = "No se ha podido crear el usuario";
+
             return View();
         }
 
