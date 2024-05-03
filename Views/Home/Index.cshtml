@@ -5,8 +5,10 @@
 }
 
 <div class="text-center">
-    @if (User.Identity!.IsAuthenticated){
-        <h1 class="display-4">Bienvenido
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <h1 class="display-4">
+            Bienvenido
             @User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
         </h1>
     }
