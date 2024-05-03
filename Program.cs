@@ -8,9 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //Add context Pedro
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+builder.Services.AddDbContext<AppDBContext>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+//https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
+/*
 builder.Services.AddDbContext<AppDBContext>(options =>
         options.UseMySql(builder.Configuration.GetConnectionString("Default"), Microsoft.EntityFrameworkCore.ServerVersion.Parse("11.3.2-mariadb")));
-//
+*/
 
 
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
