@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Data;
 using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.ViewModels;
-
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
     public class AccesoController : Controller
     {
         private readonly AppDBContext _appDbContext;
-        public AccesoController(AppDBContext appDBContext) 
+        public AccesoController(AppDBContext appDBContext)
         {
             _appDbContext = appDBContext;
         }
@@ -29,83 +28,56 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         [HttpPost]
         public async Task<IActionResult> Registrarse(UsuarioVM modelo)
         {
-            //Comprueba que las contraseñas coinciden
-            bool contraseñasCoinciden = true;
-            if (!modelo.Clave.ToString().Equals(modelo.ConfirmarClave.ToString()))
+            if (modelo.Clave != modelo.ConfirmarClave)
             {
                 ViewData["Mensaje"] = "Las contraseñas no coinciden";
-                contraseñasCoinciden = false;
+                return View();
             }
 
-            //Si coinciden comprueba que no haya otro usuario con ese correo
-            if (contraseñasCoinciden)
+            Usuario usuario = new Usuario()
             {
-                Usuario? usuario_encontrado = await _appDbContext.Usuarios
-                                            .Where(u =>
-                                                u.Correo == modelo.Correo
-                                            ).FirstOrDefaultAsync();
+                NombreCompleto = modelo.NombreCompleto,
+                Correo = modelo.Correo,
+                Clave = modelo.Clave
+            };
 
-                //Si no encuentra otro usuario con ese correo entonces intenta crear el usuario
-                if (usuario_encontrado == null)
-                {
-                    Usuario usuario = new Usuario()
-                    {
-                        NombreCompleto = modelo.NombreCompleto,
-                        Correo = modelo.Correo,
-                        Clave = modelo.Clave
-                    };
+            await _appDbContext.Usuarios.AddAsync(usuario);
+            await _appDbContext.SaveChangesAsync();
 
-                    await _appDbContext.Usuarios.AddAsync(usuario);
-                    await _appDbContext.SaveChangesAsync();
-
-                    bool usuarioCreado = true;
-
-                    if (usuario.IdUsuario == 0)
-                    {
-                        ViewData["Mensaje"] = "No se ha podido crear el usuario";
-                        usuarioCreado = false;
-                    }
-
-                    if (usuarioCreado)
-                    {
-                        return RedirectToAction("Login", "Acceso");
-                    }
-
-                } else
-                {
-                    ViewData["Mensaje"] = "Correo ya registrado";
-                }
-                
+            if (usuario.IdUsuario != 0)
+            {
+                return RedirectToAction("Login", "Acceso");
             }
+
+            ViewData["Mensaje"] = "No se ha podido crear el usuario";
 
             return View();
         }
-        #endregion
+
+        #endregion Registrarse
 
         #region Login
 
         [HttpGet]
         public IActionResult Login()
         {
+
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM modelo)
         {
-            Usuario? usuario_encontrado = await _appDbContext.Usuarios
-                                            .Where(u =>
-                                                u.Correo == modelo.Correo &&
-                                                u.Clave == modelo.Clave
-                                            ).FirstOrDefaultAsync();
+            Usuario? usuario_encontrado = await _appDbContext.Usuarios.Where(u => u.Correo == modelo.Correo && u.Clave == modelo.Clave).FirstOrDefaultAsync();
+
             if (usuario_encontrado == null)
             {
-                ViewData["Mensaje"] = "No se ha encontrado el usuario, correo o contraseña incorrectos";
+                ViewData["Mensaje"] = "No se ha encontraron coincidencias";
                 return View();
             }
 
-            List<Claim> claims= new List<Claim>()
+
+            List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, usuario_encontrado.NombreCompleto)
             };
@@ -124,6 +96,11 @@ namespace ProyectoFinalDAMAgil2324.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        #endregion
+
+
+        #endregion Login
+
+
+
     }
 }
