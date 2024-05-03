@@ -76,22 +76,22 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             }
 
 
-            //List<Claim> claims = new List<Claim>()
-            //{
-            //    new Claim(ClaimTypes.Name, usuario_encontrado.NombreCompleto)
-            //};
+            List<Claim> claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, usuario_encontrado.NombreCompleto)
+            };
 
-            //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            //AuthenticationProperties authProperties = new AuthenticationProperties()
-            //{
-            //    AllowRefresh = true,
-            //};
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            AuthenticationProperties authProperties = new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+            };
 
-            //await HttpContext.SignInAsync(
-            //    CookieAuthenticationDefaults.AuthenticationScheme,
-            //    new ClaimsPrincipal(claimsIdentity),
-            //    authProperties
-            //    );
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties
+                );
 
             return RedirectToAction("Index", "Home");
         }
