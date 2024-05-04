@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -30,7 +31,39 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.HttpOnly = true;
         /* ***** */
         options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+        options.SlidingExpiration = true;
     });
+
+
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    // Cookie settings
+//    options.Cookie.HttpOnly = true;
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+//    // If the LoginPath isn't set, ASP.NET Core defaults 
+//    // the path to /Account/Login.
+//    options.LoginPath = "/Acceso/Login";
+//    // If the AccessDeniedPath isn't set, ASP.NET Core defaults 
+//    // the path to /Account/AccessDenied.
+//    options.AccessDeniedPath = "/Acceso/AccessDenied";
+//    options.SlidingExpiration = true;
+//});
+
+
+
+
+
+ 
+
+/* SESSION*/
+//builder.Services.AddDistributedMemoryCache();
+
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromSeconds(10);
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
 
 
 
@@ -66,7 +99,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 /* Add Session*/
-app.UseSession();
+//app.UseSession();
 
 
 app.MapControllerRoute(

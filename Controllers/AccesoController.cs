@@ -63,6 +63,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         [HttpGet]
         public IActionResult Login() {
 
+            /*   esta linea es la que nos devuelve al home   */
             if (User.Identity!.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
