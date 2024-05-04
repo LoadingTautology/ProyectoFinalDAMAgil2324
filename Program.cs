@@ -25,7 +25,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Acceso/Login";
-
+        /* ***** */
+        options.LogoutPath = "/Acceso/Login";
+        options.Cookie.HttpOnly = true;
+        /* ***** */
         options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
     });
 
@@ -61,6 +64,10 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+/* Add Session*/
+app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
