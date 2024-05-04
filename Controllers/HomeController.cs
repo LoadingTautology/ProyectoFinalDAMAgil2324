@@ -35,9 +35,18 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<ActionResult> Salir()
+        //public async Task<ActionResult> Salir()
+        //{
+        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //    return RedirectToAction("Login", "Acceso");
+        //}
+
+        public async Task<IActionResult> Salir()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Session.Clear();
+
             return RedirectToAction("Login", "Acceso");
         }
 
