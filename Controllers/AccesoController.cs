@@ -7,6 +7,8 @@ using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.ViewModels;
 using System.Security.Claims;
 
+
+
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
     public class AccesoController : Controller
@@ -60,7 +62,12 @@ namespace ProyectoFinalDAMAgil2324.Controllers
 
         [HttpGet]
         public IActionResult Login() {
-        
+
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
