@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Models;
+using ProyectoFinalDAMAgil2324.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,15 +11,32 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//Add Contexto
-builder.Services.AddDbContext<UsuarioContext>(options =>
-{
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
-
-builder.Services.AddDbContext<AppDBContext>(options =>
-        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+/* ********* Inyeccion Contexto ********* */
+var connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<UsuarioContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
 //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
+
+
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/IniciarSesion";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+    });
+
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(
+        new ResponseCacheAttribute
+        {
+            NoStore = true,
+            Location = ResponseCacheLocation.None,
+        }
+       );
+});
 
 
 
@@ -32,6 +52,10 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 builder.Services.AddRazorPages();
+
+
+
+
 
 var app = builder.Build();
 

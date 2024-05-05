@@ -14,7 +14,7 @@ namespace ProyectoFinalDAMAgil2324.Services
 
         public async Task<Usuario> GetUsuario(string correo, string clave)
         {
-            Usuario usuario = await _context.Usuarios.Where(u => u.Correo == correo && u.Clave == clave).FirstOrDefaultAsync();
+            Usuario usuario = await _context.Usuarios.Where(u => u.Correo == correo && u.Clave == clave)!.FirstOrDefaultAsync();
 
             return usuario;
         }
