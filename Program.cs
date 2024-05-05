@@ -45,10 +45,10 @@ namespace ProyectoFinalDAMAgil2324
             });
 
 
-            ///*  ¿Borrar?  */
+            ///*  BORRAR ANTES DE PONER EN PRODUCCIÓN  */
             //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
             //   .AddNegotiate();
-            ///*  ¿Borrar?  */
+
 
 
             //builder.Services.AddAuthorization(options =>
@@ -56,6 +56,8 @@ namespace ProyectoFinalDAMAgil2324
             //    // By default, all incoming requests will be authorized according to the default policy.
             //    options.FallbackPolicy = options.DefaultPolicy;
             //});
+            ///*  BORRAR ANTES DE PONER EN PRODUCCIÓN  */
+
             builder.Services.AddRazorPages();
 
 
