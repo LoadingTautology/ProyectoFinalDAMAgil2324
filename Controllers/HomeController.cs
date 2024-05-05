@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -18,7 +18,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             ClaimsPrincipal claimsUser = HttpContext.User;
@@ -32,7 +32,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             ViewData["nombreUsuario"] = nombreUsuario;
             return View();
         }
-        [Authorize]
+        //[Authorize]
         public IActionResult Privacy()
         {
             return View();

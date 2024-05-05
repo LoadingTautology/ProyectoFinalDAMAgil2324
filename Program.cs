@@ -56,7 +56,7 @@ namespace ProyectoFinalDAMAgil2324
             //    // By default, all incoming requests will be authorized according to the default policy.
             //    options.FallbackPolicy = options.DefaultPolicy;
             //});
-            //builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages();
 
 
             var app = builder.Build();
@@ -117,10 +117,10 @@ namespace ProyectoFinalDAMAgil2324
 //});
 
 
-///*  ¿Borrar?  */
+///*  Borrar  */
 //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
 //   .AddNegotiate();
-///*  ¿Borrar?  */
+
 
 
 //builder.Services.AddAuthorization(options =>
@@ -128,6 +128,7 @@ namespace ProyectoFinalDAMAgil2324
 //    // By default, all incoming requests will be authorized according to the default policy.
 //    options.FallbackPolicy = options.DefaultPolicy;
 //});
+///*  Borrar  */
 //builder.Services.AddRazorPages();
 
 
