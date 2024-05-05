@@ -16,12 +16,11 @@ var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<UsuarioContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
 //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
 
-
+/* ********* Inyeccion dependencias UsuarioService ********* */
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+//Con esta inyeccion de dependencias ya podemos hacer uso en cualquier controlador de la App
 
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
     {
         options.LoginPath = "/Login/IniciarSesion";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
@@ -39,12 +38,11 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 
-
-
-
-
+/*  ¿Borrar?  */
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
+/*  ¿Borrar?  */
+
 
 builder.Services.AddAuthorization(options =>
 {
@@ -52,9 +50,6 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 builder.Services.AddRazorPages();
-
-
-
 
 
 var app = builder.Build();
@@ -76,6 +71,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=IniciarSesion}/{id?}");
 
 app.Run();
