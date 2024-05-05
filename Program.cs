@@ -1,9 +1,16 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using ProyectoFinalDAMAgil2324.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Add Contexto
+builder.Services.AddDbContext<UsuarioContext>(o =>
+{
+    o.UseSqlServer(builder.Configuration.GetConnectionString("CadenaSQL"));
+});
 
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
    .AddNegotiate();
