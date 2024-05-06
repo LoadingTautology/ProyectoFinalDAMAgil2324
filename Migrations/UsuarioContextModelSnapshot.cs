@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProyectoFinalDAMAgil2324.Models;
+using ProyectoFinalDAMAgil2324.Data;
+
 
 #nullable disable
 
 namespace ProyectoFinalDAMAgil2324.Migrations
 {
-    [DbContext(typeof(UsuarioContext))]
+    [DbContext(typeof(AppDBContext))]
     partial class UsuarioContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

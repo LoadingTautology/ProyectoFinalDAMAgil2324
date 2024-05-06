@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFinalDAMAgil2324.Models;
+using ProyectoFinalDAMAgil2324.Data;
 using ProyectoFinalDAMAgil2324.Services;
 
 
@@ -19,7 +19,7 @@ namespace ProyectoFinalDAMAgil2324
 
             /* ********* Inyeccion Contexto ********* */
             var connectionString = builder.Configuration.GetConnectionString("Default");
-            builder.Services.AddDbContext<UsuarioContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
+            builder.Services.AddDbContext<AppDBContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
             //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
 
             /* ********* Inyeccion dependencias UsuarioService ********* */
