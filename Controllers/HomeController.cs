@@ -18,7 +18,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             _logger = logger;
         }
 
-        //[Authorize]
+
         public IActionResult Index()
         {
             ClaimsPrincipal claimsUser = HttpContext.User;
@@ -32,7 +32,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
             ViewData["nombreUsuario"] = nombreUsuario;
             return View();
         }
-        //[Authorize]
+
         public IActionResult Privacy()
         {
             return View();
@@ -52,4 +52,16 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         }
     }
 }
-//pedrolachuspa
+
+/*
+ 
+             if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+ 
+            if (HttpContext.UserIdentity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+ */

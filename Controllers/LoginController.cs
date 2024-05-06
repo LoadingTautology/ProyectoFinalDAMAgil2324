@@ -21,6 +21,11 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         [HttpGet]
         public IActionResult Registro()
         {
+            if (HttpContext.User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -44,6 +49,10 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         [HttpGet]
         public IActionResult IniciarSesion()
         {
+            if (HttpContext.User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
