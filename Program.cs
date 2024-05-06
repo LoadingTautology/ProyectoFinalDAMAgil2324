@@ -66,7 +66,7 @@ namespace ProyectoFinalDAMAgil2324
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Login}/{action=IniciarSesion}/{id?}");
+                pattern: "{controller=MainPage}/{action=Index}/{id?}");
 
             app.Run();
         }

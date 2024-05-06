@@ -48,7 +48,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         public async Task<IActionResult> CerrarSesion()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("IniciarSesion", "Login");
+            return RedirectToAction("Index", "MainPage");
         }
     }
 }

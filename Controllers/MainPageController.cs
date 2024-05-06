@@ -6,7 +6,12 @@ namespace ProyectoFinalDAMAgil2324.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+			if (HttpContext.User.Identity!.IsAuthenticated)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			return View();
         }
     }
 }
