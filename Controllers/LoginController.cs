@@ -11,12 +11,11 @@ namespace ProyectoFinalDAMAgil2324.Controllers
     {
         //Inyeccion de dependencias que hay en Program.cs
         private readonly IUsuarioService _usuarioService;
-        private readonly UsuarioContext _context;
 
-        public LoginController(IUsuarioService usuarioService, UsuarioContext context)
+
+        public LoginController(IUsuarioService usuarioService)
         {
             _usuarioService = usuarioService;
-            _context = context;
         }
 
         [HttpGet]
@@ -26,7 +25,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registro(Usuario usuario, IFormFile Imagen)
+        public async Task<IActionResult> Registro(Usuario usuario)
         {
 
             usuario.Clave = Utilidades.EncriptarClave(usuario.Clave);
