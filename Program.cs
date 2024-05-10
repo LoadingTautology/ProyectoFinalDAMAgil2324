@@ -30,7 +30,8 @@ namespace ProyectoFinalDAMAgil2324
             {
                 options.LoginPath = "/Login/IniciarSesion";
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-            });
+				options.AccessDeniedPath = "/Login/IniciarSesion";
+			});
 
             builder.Services.AddControllersWithViews(options =>
             {
