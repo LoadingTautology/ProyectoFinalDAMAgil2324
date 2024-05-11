@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalDAMAgil2324.Models;
 using ProyectoFinalDAMAgil2324.Services;
 using System.Security.Claims;
+using ProyectoFinalDAMAgil2324.Utilities;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
-	public class LoginController : Controller
+    public class LoginController : Controller
 	{
 		//Inyeccion de dependencias que hay en Program.cs
 		private readonly IUsuarioService _usuarioService;
@@ -33,7 +34,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
 		public async Task<IActionResult> Registro(Usuario usuario)
 		{
 
-			usuario.Clave = Utilidades.EncriptarClave(usuario.Clave);
+			usuario.Clave = Encryptor.EncriptarClave(usuario.Clave);
 
 			Usuario usuarioCreado = await _usuarioService.SaveUsuario(usuario);
 
@@ -59,7 +60,7 @@ namespace ProyectoFinalDAMAgil2324.Controllers
 		[HttpPost]
 		public async Task<IActionResult> IniciarSesion(string correo, string clave)
 		{
-			Usuario usuarioEncontrado = await _usuarioService.GetUsuario(correo, Utilidades.EncriptarClave(clave));
+			Usuario usuarioEncontrado = await _usuarioService.GetUsuario(correo, Encryptor.EncriptarClave(clave));
 
 			if (usuarioEncontrado == null)
 			{

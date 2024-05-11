@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace ProyectoFinalDAMAgil2324.Services
+namespace ProyectoFinalDAMAgil2324.Utilities
 {
-    public class Utilidades
+    public class Encryptor
     {
         //Este metodo recibe una clave que el usuario defina y la encripta.
         public static string EncriptarClave(string clave)
