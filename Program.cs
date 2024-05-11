@@ -33,16 +33,16 @@ namespace ProyectoFinalDAMAgil2324
 				options.AccessDeniedPath = "/Login/IniciarSesion";
 			});
 
-            builder.Services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add(
-                    new ResponseCacheAttribute
-                    {
-                        NoStore = true,
-                        Location = ResponseCacheLocation.None,
-                    }
-                   );
-            });
+            //builder.Services.AddControllersWithViews(options =>
+            //{
+            //    options.Filters.Add(
+            //        new ResponseCacheAttribute
+            //        {
+            //            NoStore = true,
+            //            Location = ResponseCacheLocation.None,
+            //        }
+            //       );
+            //});
 
 
             builder.Services.AddRazorPages();
