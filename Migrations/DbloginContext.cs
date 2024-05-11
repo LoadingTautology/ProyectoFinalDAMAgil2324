@@ -6,13 +6,13 @@ using ProyectoFinalDAMAgil2324.Models;
 
 namespace ProyectoFinalDAMAgil2324.Migrations;
 
-public partial class Dblogin1Context : DbContext
+public partial class DbloginContext : DbContext
 {
-    public Dblogin1Context()
+    public DbloginContext()
     {
     }
 
-    public Dblogin1Context(DbContextOptions<Dblogin1Context> options)
+    public DbloginContext(DbContextOptions<DbloginContext> options)
         : base(options)
     {
     }
