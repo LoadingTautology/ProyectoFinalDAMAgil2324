@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Data;
+using ProyectoFinalDAMAgil2324.Migrations;
 using ProyectoFinalDAMAgil2324.Services;
 
 
@@ -19,7 +20,7 @@ namespace ProyectoFinalDAMAgil2324
 
             /* ********* Inyeccion Contexto ********* */
             var connectionString = builder.Configuration.GetConnectionString("Default");
-            builder.Services.AddDbContext<AppDBContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
+            builder.Services.AddDbContext<Dblogin1Context>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
             //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
 
             /* ********* Inyeccion dependencias UsuarioService ********* */
@@ -73,3 +74,6 @@ namespace ProyectoFinalDAMAgil2324
         }
     }
 }
+
+//Hay que descargar EntityFramework.Design
+//Scaffold-DbContext "server=localhost;port=3306;database=DBLogin1;uid=root;password=" Pomelo.EntityFrameworkCore.MySql -OutputDir Migrations

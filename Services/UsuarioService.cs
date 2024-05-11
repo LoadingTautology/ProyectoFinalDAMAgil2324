@@ -1,16 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Data;
+using ProyectoFinalDAMAgil2324.Migrations;
 using ProyectoFinalDAMAgil2324.Models;
 
 namespace ProyectoFinalDAMAgil2324.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        //Inyecta la base de datos para poder implementar los metodos de la interfaz
-        private readonly AppDBContext _context;
+		//Inyecta la base de datos para poder implementar los metodos de la interfaz
+        private readonly Dblogin1Context _context;
 
 
-        public UsuarioService(AppDBContext context)
+        public UsuarioService(Dblogin1Context context)
         {
             _context = context;
         }
