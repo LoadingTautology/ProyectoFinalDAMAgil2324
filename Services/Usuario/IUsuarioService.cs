@@ -1,13 +1,14 @@
 ﻿using ProyectoFinalDAMAgil2324.Models;
 
-namespace ProyectoFinalDAMAgil2324.Services
+
+namespace ProyectoFinalDAMAgil2324.Services.Usuario
 {
     public interface IUsuarioService
     {
         //Sirve para autenticar un usuario que se extrae de la bbdd
-        Task<Usuario> GetUsuario(string correo, string clave);
+        Task<Models.Usuario> GetUsuario(string correo, string clave);
 
         //Sirve guardar un usuario en la bbdd
-        Task<Usuario> SaveUsuario(Usuario usuario);
+        Task<Models.Usuario> SaveUsuario(Models.Usuario usuario);
     }
 }

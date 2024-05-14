@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinalDAMAgil2324.Migrations;
-using ProyectoFinalDAMAgil2324.Services;
+using ProyectoFinalDAMAgil2324.Models;
+
+
 
 
 
@@ -17,14 +19,13 @@ namespace ProyectoFinalDAMAgil2324
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            /* ********* Inyeccion Contexto ********* */
-            var connectionString = builder.Configuration.GetConnectionString("Default");
-            builder.Services.AddDbContext<DbloginContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
-            //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
-
+			/* ********* Inyeccion Contexto ********* */             //https://medium.com/@vahidalizadeh1990/crud-operation-by-repository-pattern-using-net-6-ef-core-sql-server-mysql-mongodb-part-2-25532829b79d
+			var connectionString = builder.Configuration.GetConnectionString("Default");
+            builder.Services.AddDbContext<CampusbbddContext>(options => { options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)); });
+            
             /* ********* Inyeccion dependencias UsuarioService ********* */
-            builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-            //Con esta inyeccion de dependencias ya podemos hacer uso en cualquier controlador de la App
+            builder.Services.AddScoped<Services.Usuario.IUsuarioService, Services.Usuario.UsuarioService>();
+            
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
@@ -75,4 +76,4 @@ namespace ProyectoFinalDAMAgil2324
 }
 
 //Hay que descargar EntityFramework.Design
-//Scaffold-DbContext "server=localhost;port=3306;database=DBLogin1;uid=root;password=" Pomelo.EntityFrameworkCore.MySql -OutputDir Migrations
+//Scaffold-DbContext "server=localhost;port=3306;database=campusbbdd;uid=root;password=" Pomelo.EntityFrameworkCore.MySql -OutputDir Migrations

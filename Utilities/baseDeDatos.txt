@@ -1,0 +1,194 @@
+﻿DROP DATABASE IF EXISTS campusbbdd;
+
+CREATE DATABASE campusbbdd;
+
+USE campusbbdd;
+
+-- Creación de la tabla FranjaHoraria
+CREATE TABLE FranjaHoraria (
+    HoraMinInicio TIME,
+    HoraMinFinal TIME,
+    PRIMARY KEY (HoraMinInicio, HoraMinFinal)
+);
+
+-- Creación de la tabla DiaSemana
+CREATE TABLE DiaSemana (
+    Dia VARCHAR(10),
+    PRIMARY KEY (Dia)
+);
+
+-- Creación de la tabla Aula
+CREATE TABLE Aula (
+    IdAula INT AUTO_INCREMENT,
+    NombreAula VARCHAR(50) NOT NULL DEFAULT 'Aula',
+    AforoMax INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (IdAula)
+);
+
+-- Creación de la tabla Asignatura
+CREATE TABLE Asignatura (
+    IdAsignatura INT AUTO_INCREMENT,
+    NombreAsignatura VARCHAR(100) NOT NULL DEFAULT 'Asignatura',
+    Curso INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (IdAsignatura)
+);
+
+-- Creación de la tabla CicloFormativo
+CREATE TABLE CicloFormativo (
+    IdCiclo INT AUTO_INCREMENT,
+    NombreCiclo VARCHAR(100) NOT NULL DEFAULT 'Ciclo',
+    PRIMARY KEY (IdCiclo)
+);
+
+-- Creación de la tabla AsignaturasCicloFormativo
+CREATE TABLE AsignaturasCicloFormativo (
+    IdAsignatura INT,
+    IdCiclo INT,
+    PRIMARY KEY (IdAsignatura, IdCiclo),
+    FOREIGN KEY (IdCiclo) REFERENCES CicloFormativo(IdCiclo),
+    FOREIGN KEY (IdAsignatura) REFERENCES Asignatura(IdAsignatura)
+);
+
+-- Creación de la tabla Ciclo_Asignatura_Aula_FranjaHoraria_Dia
+CREATE TABLE Horario (
+    IdAula INT,
+    HoraMinInicio TIME,
+    HoraMinFinal TIME,
+    Dia VARCHAR(10),
+    IdAsignatura INT NOT NULL,
+    IdCiclo INT NOT NULL,
+    PRIMARY KEY (IdAula, HoraMinInicio, HoraMinFinal, Dia, IdAsignatura, IdCiclo),
+    FOREIGN KEY (IdAsignatura, IdCiclo) REFERENCES AsignaturasCicloFormativo (IdAsignatura, IdCiclo),
+    FOREIGN KEY (IdAula) REFERENCES Aula(IdAula),
+    FOREIGN KEY (HoraMinInicio, HoraMinFinal) REFERENCES FranjaHoraria(HoraMinInicio, HoraMinFinal),
+    FOREIGN KEY (Dia) REFERENCES DiaSemana(Dia)
+);
+
+
+-- Creación de la tabla ExamenAsignaturas
+CREATE TABLE ExamenAsignaturas (
+    IdAsignatura INT,
+    IdExamen INT,
+    Descripcion VARCHAR(255) NOT NULL DEFAULT '',
+    NumEvaluacion INT NOT NULL DEFAULT 0,
+    Tiempo TIME NOT NULL DEFAULT '01:30:00',
+    PRIMARY KEY (IdAsignatura, IdExamen),
+    FOREIGN KEY (IdAsignatura) REFERENCES Asignatura(IdAsignatura)
+);
+
+-- Creación de la tabla CorreoElectronico
+CREATE TABLE CorreoElectronico (
+    Email VARCHAR(100),
+    Clave VARCHAR(100) NOT NULL DEFAULT '',
+    PRIMARY KEY (Email)
+);
+
+-- Creación de la tabla Usuario
+CREATE TABLE Usuario (
+    IdUsuario INT AUTO_INCREMENT,
+    NombreUsuario VARCHAR(50) NOT NULL DEFAULT '',
+    ApellidosUsuario VARCHAR(100) NOT NULL DEFAULT '',
+    Rol VARCHAR(50) NOT NULL DEFAULT 'ALUMNO',
+    Email VARCHAR(100) NOT NULL,
+    PRIMARY KEY (IdUsuario),
+    FOREIGN KEY (Email) REFERENCES CorreoElectronico(Email),
+    UNIQUE(Email)
+);
+
+-- Creación de la tabla Administrador
+CREATE TABLE Administrador (
+    IdAdministrador INT,
+    DNI VARCHAR(20) NOT NULL DEFAULT '',
+    PRIMARY KEY (IdAdministrador),
+    FOREIGN KEY (IdAdministrador) REFERENCES Usuario(IdUsuario)
+);
+
+-- Creación de la tabla Profesor
+CREATE TABLE Profesor (
+    IdProfesor INT,
+    Especialidad VARCHAR(100) NOT NULL DEFAULT '',
+    PRIMARY KEY (IdProfesor),
+    FOREIGN KEY (IdProfesor) REFERENCES Usuario(IdUsuario)
+);
+
+-- Creación de la tabla Alumno
+CREATE TABLE Alumno (
+    IdAlumno INT,
+    FechaDeNacimiento DATE NOT NULL DEFAULT '0000-01-01',
+    PRIMARY KEY (IdAlumno),
+    FOREIGN KEY (IdAlumno) REFERENCES Usuario(IdUsuario)
+);
+
+-- Creación de la tabla CentroEducativo
+CREATE TABLE CentroEducativo (
+    IdCentro INT AUTO_INCREMENT,
+    NombreCentro VARCHAR(100) NOT NULL DEFAULT '',
+    Direccion VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (IdCentro),
+    UNIQUE(NombreCentro, Direccion)
+);
+
+-- Creación de la tabla UsuariosCentroEducativo
+CREATE TABLE UsuariosCentroEducativo (
+    IdCentro INT,
+    IdUsuario INT,
+    PRIMARY KEY (IdCentro, IdUsuario),
+    FOREIGN KEY (IdCentro) REFERENCES CentroEducativo(IdCentro),
+    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario)
+);
+
+-- Creación de la tabla AsistenciaAlumnos
+CREATE TABLE AsistenciaAlumnos (
+    IdAlumno INT,
+    IdAsignatura INT,
+    IdCiclo INT,
+    Fecha DATE DEFAULT CURDATE(),
+    PRIMARY KEY (IdAlumno, IdAsignatura, IdCiclo, Fecha),
+    FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno),
+    FOREIGN KEY (IdAsignatura, IdCiclo) REFERENCES AsignaturasCicloFormativo
+(IdAsignatura, IdCiclo)
+);
+
+-- Creación de la tabla MatriculasAlumnos
+CREATE TABLE MatriculasAlumnos (
+    IdAlumno INT,
+    IdAsignatura INT,
+    IdCiclo INT,
+    Eva1 FLOAT NOT NULL DEFAULT 0,
+    Eva2 FLOAT DEFAULT 0,
+    Eva3 FLOAT DEFAULT 0,
+    PRIMARY KEY (IdAlumno, IdAsignatura, IdCiclo),
+    FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno),
+    FOREIGN KEY (IdAsignatura, IdCiclo) REFERENCES AsignaturasCicloFormativo
+(IdAsignatura, IdCiclo),
+    CONSTRAINT CHK_Eva1 CHECK (0<=Eva1 AND Eva1<=10),
+    CONSTRAINT CHK_Eva2 CHECK (0<=Eva2 AND Eva2<=10),
+    CONSTRAINT CHK_Eva3 CHECK (0<=Eva3 AND Eva3<=10)
+);
+
+-- Creación de la tabla AsignaturasProfesor
+CREATE TABLE AsignaturasProfesor (
+    IdProfesor INT,
+    IdAsignatura INT,
+    IdCiclo INT,
+    PRIMARY KEY (IdProfesor, IdAsignatura, IdCiclo),
+    FOREIGN KEY (IdProfesor) REFERENCES Profesor(IdProfesor),
+    FOREIGN KEY (IdAsignatura, IdCiclo) REFERENCES AsignaturasCicloFormativo
+(IdAsignatura, IdCiclo)
+);
+
+-- Creación de la tabla DudasAlumnoProfesor
+CREATE TABLE DudasAlumnoProfesor (
+    IdAlumno INT,
+    IdProfesor INT,
+    IdAsignatura INT,
+    IdCiclo INT,
+    Fecha TIME DEFAULT NOW(),
+    Atender BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (IdAlumno, IdProfesor, IdAsignatura, IdCiclo, Fecha),
+    FOREIGN KEY (IdAlumno) REFERENCES Alumno(IdAlumno),
+    FOREIGN KEY (IdProfesor) REFERENCES Profesor(IdProfesor),
+    FOREIGN KEY (IdAsignatura, IdCiclo) REFERENCES AsignaturasCicloFormativo
+(IdAsignatura, IdCiclo)
+);
+

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
-using ProyectoFinalDAMAgil2324.Models;
+using ProyectoFinalDAMAgil2324.Migrations;
 
-namespace ProyectoFinalDAMAgil2324.Migrations;
+namespace ProyectoFinalDAMAgil2324.Models;
 
 public partial class DbloginContext : DbContext
 {

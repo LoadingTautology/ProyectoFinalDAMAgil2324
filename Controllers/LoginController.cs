@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalDAMAgil2324.Models;
-using ProyectoFinalDAMAgil2324.Services;
 using System.Security.Claims;
 using ProyectoFinalDAMAgil2324.Utilities;
+using ProyectoFinalDAMAgil2324.Services.Usuario;
 
 namespace ProyectoFinalDAMAgil2324.Controllers
 {
